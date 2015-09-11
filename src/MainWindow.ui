@@ -37,15 +37,32 @@
          <string>Tree</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
          <item>
           <widget class="OsgTreeForm" name="osgTreeForm" native="true"/>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="cameraTab">
         <attribute name="title">
-         <string>Tab 2</string>
+         <string>Camera</string>
         </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="OsgCameraForm" name="widget" native="true"/>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -125,6 +142,12 @@
    <class>Osg3dView</class>
    <extends>QOpenGLWidget</extends>
    <header>Osg3dView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OsgCameraForm</class>
+   <extends>QWidget</extends>
+   <header>OsgCameraForm.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

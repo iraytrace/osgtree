@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     OsgTreeView.cpp \
     OsgTreeForm.cpp \
     ViewingCore.cpp \
-    Osg3dView.cpp
+    Osg3dView.cpp \
+    OsgCameraForm.cpp
 
 HEADERS  += MainWindow.h \
     OsgItemModel.h \
@@ -26,7 +27,9 @@ HEADERS  += MainWindow.h \
     VariantPtr.h \
     OsgTreeForm.h \
     ViewingCore.h \
-    Osg3dView.h
+    Osg3dView.h \
+    OsgCameraForm.h
 
 FORMS    += MainWindow.ui \
-    OsgTreeForm.ui
+    OsgTreeForm.ui \
+    OsgCameraForm.ui
