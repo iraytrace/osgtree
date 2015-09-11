@@ -18,6 +18,11 @@ OsgTreeView::OsgTreeView(QWidget *parent) : QTreeView(parent)
             this, SLOT(announceObject(QModelIndex)));
     connect(this, SIGNAL(clicked(QModelIndex)),
             this, SLOT(announceObject(QModelIndex)));
+
+    popupMenu.addAction(new QAction("Copy", this));
+    popupMenu.addAction(new QAction("Cut", this));
+    popupMenu.addAction(new QAction("Paste", this));
+
 }
 
 
@@ -29,11 +34,7 @@ void OsgTreeView::resizeColumnsToFit()
 
 void OsgTreeView::customMenuRequested(QPoint pos)
 {
-    QMenu *menu=new QMenu(this);
-    menu->addAction(new QAction("Action 1", this));
-    menu->addAction(new QAction("Action 2", this));
-    menu->addAction(new QAction("Action 3", this));
-    menu->popup(this->viewport()->mapToGlobal(pos));
+    popupMenu.popup(this->viewport()->mapToGlobal(pos));
 }
 
 void OsgTreeView::announceObject(const QModelIndex &index)

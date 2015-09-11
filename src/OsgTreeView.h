@@ -2,6 +2,8 @@
 #define OSGTREEVIEW_H
 
 #include <QTreeView>
+#include <QMenu>
+
 #include <osg/ref_ptr>
 #include <osg/Object>
 
@@ -19,6 +21,9 @@ public slots:
     void customMenuRequested(QPoint pos);
 private slots:
     void announceObject(const QModelIndex & index);
+
+private:
+    QMenu popupMenu;
 };
 
 #endif // OSGTREEVIEW_H
