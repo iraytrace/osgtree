@@ -8,12 +8,12 @@
 #include "ViewingCore.h"
 class OsgItemModel;
 
-class OsgView : public QOpenGLWidget, public osgViewer::Viewer
+class Osg3dView : public QOpenGLWidget, public osgViewer::Viewer
 {
     Q_OBJECT
 
 public:
-    OsgView(QWidget * parent = 0);
+    Osg3dView(QWidget * parent = 0);
 
     /// Let others tell what scene graph we should be drawing
     void setScene(OsgItemModel *model);
@@ -28,7 +28,7 @@ public slots:
     void mouseMoveEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent *event);
     void customMenuRequested(const QPoint &pos);
-    void columnsInserted(const QModelIndex & parent, int first, int last);
+
     void rowsInserted(const QModelIndex & parent, int first, int last);
 
     void dataChanged(const QModelIndex & topLeft,

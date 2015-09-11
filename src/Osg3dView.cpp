@@ -1,4 +1,4 @@
-#include "OsgView.h"
+#include "Osg3dView.h"
 
 #include <QMenu>
 #include "OsgItemModel.h"
@@ -6,7 +6,7 @@
 #include <osg/LightModel>
 #include <osgViewer/Renderer>
 
-OsgView::OsgView(QWidget *parent)
+Osg3dView::Osg3dView(QWidget *parent)
     : QOpenGLWidget(parent)
     , m_viewingCore(new ViewingCore)
 {
@@ -38,7 +38,7 @@ OsgView::OsgView(QWidget *parent)
     update();
 }
 
-void OsgView::setScene(OsgItemModel *model)
+void Osg3dView::setScene(OsgItemModel *model)
 {
     qDebug("setScene");
     connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
@@ -49,7 +49,7 @@ void OsgView::setScene(OsgItemModel *model)
     m_viewingCore->setSceneData(root);
 }
 
-void OsgView::paintGL()
+void Osg3dView::paintGL()
 {
     qDebug("paintGL");
 
@@ -66,7 +66,7 @@ void OsgView::paintGL()
     frame();
 }
 
-void OsgView::resizeGL(int w, int h)
+void Osg3dView::resizeGL(int w, int h)
 {
     qDebug("resizeGL");
 
@@ -74,34 +74,34 @@ void OsgView::resizeGL(int w, int h)
     m_osgGraphicsWindow->resized(0,0,w,h);
 }
 
-void OsgView::hello()
+void Osg3dView::hello()
 {
     qDebug("hello");
 }
 
-void OsgView::mousePressEvent(QMouseEvent *event)
+void Osg3dView::mousePressEvent(QMouseEvent *event)
 {
     qDebug("mousePressEvent");
     if (event->button() == Qt::RightButton)
         customMenuRequested(event->pos());
 }
 
-void OsgView::mouseReleaseEvent(QMouseEvent *event)
+void Osg3dView::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug("mouseReleaseEvent");
 }
 
-void OsgView::mouseMoveEvent(QMouseEvent *event)
+void Osg3dView::mouseMoveEvent(QMouseEvent *event)
 {
     qDebug("mouseMoveEvent");
 }
 
-void OsgView::wheelEvent(QWheelEvent *event)
+void Osg3dView::wheelEvent(QWheelEvent *event)
 {
 
 }
 
-void OsgView::customMenuRequested(const QPoint &pos)
+void Osg3dView::customMenuRequested(const QPoint &pos)
 {
     qDebug("customMenu");
     QMenu *menu=new QMenu(this);
@@ -111,13 +111,7 @@ void OsgView::customMenuRequested(const QPoint &pos)
     menu->popup(this->mapToGlobal(pos));
 }
 
-void OsgView::columnsInserted(const QModelIndex &parent, int first, int last)
-{
-    qDebug("columnsInserted");
-
-}
-
-void OsgView::rowsInserted(const QModelIndex &parent, int first, int last)
+void Osg3dView::rowsInserted(const QModelIndex &parent, int first, int last)
 {
     qDebug("rowsInserted");
     m_viewingCore->viewTop();
@@ -125,12 +119,13 @@ void OsgView::rowsInserted(const QModelIndex &parent, int first, int last)
     update();
 }
 
-void OsgView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+void Osg3dView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
     qDebug("dataChanged");
+    update();
 }
 
-void OsgView::setLightingTwoSided()
+void Osg3dView::setLightingTwoSided()
 {
     osg::ref_ptr<osg::LightModel> lm = new osg::LightModel;
     lm->setTwoSided(true);

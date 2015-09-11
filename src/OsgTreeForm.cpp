@@ -39,6 +39,9 @@ OsgTreeForm::~OsgTreeForm()
 void OsgTreeForm::setModel(OsgItemModel *model)
 {
     ui->osgTreeView->setModel(model);
+
+    connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
+            ui->osgTreeView, SLOT(resizeColumnsToFit()));
 }
 
 QTableWidgetItem * OsgTreeForm::getOrCreateWidgetItem(QTableWidget *tw, int row, int col)
@@ -189,11 +192,8 @@ void OsgTreeForm::setTableValuesDrawable(osg::Drawable *drawable)
 {
     if (!drawable) return;
 
-    QTableWidgetItem *twi;
-
-    twi = setKeyChecked("UseVertexBuffer", drawable->getUseVertexBufferObjects());
-
-    twi = setKeyChecked("UseDisplayList", drawable->getUseDisplayList());
+    setKeyChecked("UseVertexBuffer", drawable->getUseVertexBufferObjects());
+    setKeyChecked("UseDisplayList", drawable->getUseDisplayList());
 
     setTableValuesGeometry(drawable->asGeometry());
 }

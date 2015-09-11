@@ -15,8 +15,7 @@ signals:
     void osgObjectActivated(osg::ref_ptr<osg::Object> object);
 
 public slots:
-    void columnsWereInserted(const QModelIndex & parent, int first, int last);
-    void resizeColumnsToFit(const QModelIndex & index);
+    void resizeColumnsToFit();
     void customMenuRequested(QPoint pos);
 private slots:
     void announceObject(const QModelIndex & index);

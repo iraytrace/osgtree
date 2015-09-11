@@ -20,7 +20,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="OsgView" name="osg3dView">
+      <widget class="Osg3dView" name="osg3dView">
        <property name="minimumSize">
         <size>
          <width>256</width>
@@ -122,9 +122,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>OsgView</class>
+   <class>Osg3dView</class>
    <extends>QOpenGLWidget</extends>
-   <header>OsgView.h</header>
+   <header>Osg3dView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

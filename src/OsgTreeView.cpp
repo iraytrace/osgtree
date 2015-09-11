@@ -10,9 +10,9 @@ OsgTreeView::OsgTreeView(QWidget *parent) : QTreeView(parent)
             this, SLOT(customMenuRequested(QPoint)));
 
     connect(this, SIGNAL(expanded(QModelIndex)),
-            this, SLOT(resizeColumnsToFit(QModelIndex)));
+            this, SLOT(resizeColumnsToFit()));
     connect(this, SIGNAL(collapsed(QModelIndex)),
-            this, SLOT(resizeColumnsToFit(QModelIndex)));
+            this, SLOT(resizeColumnsToFit()));
 
     connect(this, SIGNAL(activated(QModelIndex)),
             this, SLOT(announceObject(QModelIndex)));
@@ -20,16 +20,9 @@ OsgTreeView::OsgTreeView(QWidget *parent) : QTreeView(parent)
             this, SLOT(announceObject(QModelIndex)));
 }
 
-void OsgTreeView::columnsWereInserted(const QModelIndex &parent, int first, int last)
-{
-    qDebug("columnsWereInserted");
-    resizeColumnsToFit(parent);
-}
 
-
-void OsgTreeView::resizeColumnsToFit(const QModelIndex &index)
+void OsgTreeView::resizeColumnsToFit()
 {
-    this->resizeColumnToContents(index.column());
     this->resizeColumnToContents(0);
     this->resizeColumnToContents(1);
 }

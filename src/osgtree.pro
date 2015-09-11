@@ -17,16 +17,16 @@ SOURCES += main.cpp\
     OsgItemModel.cpp \
     OsgTreeView.cpp \
     OsgTreeForm.cpp \
-    OsgView.cpp \
-    ViewingCore.cpp
+    ViewingCore.cpp \
+    Osg3dView.cpp
 
 HEADERS  += MainWindow.h \
     OsgItemModel.h \
     OsgTreeView.h \
     VariantPtr.h \
     OsgTreeForm.h \
-    OsgView.h \
-    ViewingCore.h
+    ViewingCore.h \
+    Osg3dView.h
 
 FORMS    += MainWindow.ui \
     OsgTreeForm.ui
