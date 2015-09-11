@@ -42,7 +42,9 @@ void Osg3dView::setScene(OsgItemModel *model)
 {
     qDebug("setScene");
     connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-            this, SLOT(rowsInserted(QModelIndex,int,int)));
+            this, SLOT(fitScreenTopView(QModelIndex,int,int)));
+    connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+            this, SLOT(update()));
 
     osg::ref_ptr<osg::Group> root = model->getRoot();
     this->setSceneData(root);
@@ -111,7 +113,7 @@ void Osg3dView::customMenuRequested(const QPoint &pos)
     menu->popup(this->mapToGlobal(pos));
 }
 
-void Osg3dView::rowsInserted(const QModelIndex &parent, int first, int last)
+void Osg3dView::fitScreenTopView(const QModelIndex &parent, int first, int last)
 {
     qDebug("rowsInserted");
     m_viewingCore->viewTop();

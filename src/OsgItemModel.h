@@ -58,6 +58,8 @@ private:
     osg::ref_ptr<osg::Group> m_root;
     osg::ref_ptr<osg::MatrixTransform> m_loadedModel;
     osg::ref_ptr<osg::Group> m_clipBoard;
+    bool setObjectMask(const QModelIndex &index, const QVariant &value);
+    bool setObjectName(const QModelIndex &index, const QVariant &value);
 };
 
 #endif // OSGITEMMODEL_H

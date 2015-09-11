@@ -21,7 +21,6 @@ public:
 public slots:
     void paintGL();
     void resizeGL(int w, int h);
-
     void hello();
     void mousePressEvent( QMouseEvent* event );
     void mouseReleaseEvent(QMouseEvent* event);
@@ -29,7 +28,7 @@ public slots:
     void wheelEvent(QWheelEvent *event);
     void customMenuRequested(const QPoint &pos);
 
-    void rowsInserted(const QModelIndex & parent, int first, int last);
+    void fitScreenTopView(const QModelIndex & parent, int first, int last);
 
     void dataChanged(const QModelIndex & topLeft,
                      const QModelIndex & bottomRight,

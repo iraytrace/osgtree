@@ -127,9 +127,9 @@ Qt::ItemFlags OsgItemModel::flags(const QModelIndex &index) const
            index.row(), index.column(),
            object->getName().c_str());
 
-    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    if (index.column() == 0) {
-        flags |= Qt::ItemIsEditable;
+    Qt::ItemFlags flags = Qt::ItemIsEnabled ;
+    if (index.column() == 0 || index.column() == 2) {
+        flags |= Qt::ItemIsEditable | Qt::ItemIsSelectable;
     }
 
     return flags;
@@ -318,25 +318,54 @@ int OsgItemModel::rowCount(const QModelIndex &parent) const
     return kids;
 }
 
+bool OsgItemModel::setObjectName(const QModelIndex & index,
+                   const QVariant & value)
+{
+    getObjectFromModelIndex(index)->setName(qPrintable(value.toString()));
+    return true;
+}
+bool OsgItemModel::setObjectMask(const QModelIndex & index,
+                   const QVariant & value)
+{
+    bool ok = false;
+    osg::ref_ptr<osg::Object> object = getObjectFromModelIndex(index);
+    if (osg::Node *node = dynamic_cast<osg::Node *>(object.get())) {
+
+        int number = value.toString().toUInt(&ok, 16);
+        if (ok) {
+            node->setNodeMask(number);
+        } else {
+            qDebug("set mask: %s %d", qPrintable(value.toString()), number);
+        }
+    }
+    return ok;
+}
+
 bool OsgItemModel::setData(const QModelIndex & index,
                            const QVariant & value,
                            int role )
 {
-    modelDebug("setData(%d %d %s) = \"%s\"",
+    qDebug("setData(%d %d %s) = \"%s\"",
            index.row(), index.column(),
            qPrintable(stringFromRole(role)),
            qPrintable(value.toString()));
 
-    osg::ref_ptr<osg::Object> object = getObjectFromModelIndex(index);
-
-    if (role != Qt::EditRole)
+    if (role != Qt::EditRole || value.toString().size() <= 0)
         return false;
 
-    if (index.column() == 0 && value.toString().size() > 0) {
-        object->setName(qPrintable(value.toString()));
-        return true;
+    bool dataWasSet = false;
+
+    switch (index.column()) {
+    case 0: dataWasSet = setObjectName(index, value); break;
+    case 2: dataWasSet = setObjectMask(index, value); break;
+    default:
+        break;
     }
-    return false;
+
+    if (dataWasSet)
+        emit dataChanged(index, index);
+
+    return dataWasSet;
 }
 
 void OsgItemModel::importFileByName(const QString fileName)
