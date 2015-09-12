@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>684</height>
+    <width>753</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,14 +23,14 @@
       <widget class="Osg3dView" name="osg3dView">
        <property name="minimumSize">
         <size>
-         <width>256</width>
-         <height>256</height>
+         <width>512</width>
+         <height>512</height>
         </size>
        </property>
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="treeTab">
         <attribute name="title">
@@ -74,7 +74,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
+     <width>753</width>
      <height>33</height>
     </rect>
    </property>
