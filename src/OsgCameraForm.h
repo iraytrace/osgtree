@@ -14,6 +14,8 @@ class OsgCameraForm : public QWidget
 public:
     explicit OsgCameraForm(QWidget *parent = 0);
     ~OsgCameraForm();
+public slots:
+    void updateFromCamera();
 
 private:
     Ui::OsgCameraForm *ui;

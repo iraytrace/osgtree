@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->osgTreeForm->setModel(&m_itemModel);
     ui->osg3dView->setScene(&m_itemModel);
+
+    connect(ui->osg3dView, SIGNAL(updated()),
+            ui->osgCameraView, SLOT(updateFromCamera()));
 }
 
 MainWindow::~MainWindow()

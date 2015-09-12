@@ -60,7 +60,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="OsgCameraForm" name="widget" native="true"/>
+          <widget class="OsgCameraForm" name="osgCameraView" native="true"/>
          </item>
         </layout>
        </widget>
