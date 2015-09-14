@@ -3,6 +3,9 @@
 #include <osg/Node>
 #include <osg/MatrixTransform>
 #include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
+
+#include <osg/ValueObject>
 
 static bool debugModel = false;
 #define modelDebug if (debugModel) qDebug
@@ -19,6 +22,7 @@ OsgItemModel::OsgItemModel(QObject * parent)
     m_loadedModel->setName("__loadedModel");
 
     m_root->addChild(m_loadedModel);
+    m_root->setUserValue("fred", 10);
 
     m_clipBoard->setName("__clipBoard");
 }
@@ -192,19 +196,20 @@ QVariant OsgItemModel::headerData(int section, Qt::Orientation orientation, int 
 
 QModelIndex OsgItemModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (!(parent.isValid() && parent.column() != 0))
-    {
-        osg::ref_ptr<osg::Object> parentItem = getObjectFromModelIndex(parent);
+    qDebug("parent row:%d col:%d Valid: %s",
+           parent.row(), parent.column(), parent.isValid()?"true":"false");
 
-        if (osg::Group *group = dynamic_cast<osg::Group *>(parentItem.get())) {
-            if (group->getNumChildren() > (unsigned)row)
-                return createIndex(row, column, group->getChild(row));
-        } else if (osg::Geode *geode = dynamic_cast<osg::Geode *>(parentItem.get())) {
-            if (geode->getNumDrawables() > (unsigned)row) {
-                return createIndex(row, column, geode->getDrawable(row));
-            }
+    osg::ref_ptr<osg::Object> parentItem = getObjectFromModelIndex(parent);
+
+    if (osg::Group *group = dynamic_cast<osg::Group *>(parentItem.get())) {
+        if (group->getNumChildren() > (unsigned)row)
+            return createIndex(row, column, group->getChild(row));
+    } else if (osg::Geode *geode = dynamic_cast<osg::Geode *>(parentItem.get())) {
+        if (geode->getNumDrawables() > (unsigned)row) {
+            return createIndex(row, column, geode->getDrawable(row));
         }
     }
+
     return QModelIndex();
 }
 
@@ -372,13 +377,18 @@ void OsgItemModel::importFileByName(const QString fileName)
 {
     osg::Node *loaded = osgDB::readNodeFile(fileName.toStdString());
 
+
     if (!loaded)
         return;
+
 
     if (loaded->getName().size() == 0)
         loaded->setName(basename(qPrintable(fileName)));
 
-    if (m_loadedModel->getNumChildren() == 0) {
+    int childNumber = m_loadedModel->getNumChildren();
+    loaded->setUserValue("childIndex", childNumber);
+
+    if (childNumber == 0) {
         beginInsertColumns(createIndex(-1, -1), 1, 2);
         insertNode(m_loadedModel, loaded, m_loadedModel->getNumChildren(), 0);
         endInsertColumns();
@@ -386,6 +396,18 @@ void OsgItemModel::importFileByName(const QString fileName)
         insertNode(m_loadedModel, loaded, m_loadedModel->getNumChildren(), 0);
     }
 }
+
+bool OsgItemModel::saveToFileByName(const QString fileName)
+{
+    if (m_loadedModel->getNumChildren() == 1) {
+        return osgDB::writeNodeFile(*m_loadedModel->getChild(0), qPrintable(fileName));
+    }
+
+    osg::Group *writeGroup = new osg::Group(*m_loadedModel);
+    writeGroup->setName(qPrintable(fileName));
+    return osgDB::writeNodeFile(*writeGroup, fileName.toStdString().c_str());
+}
+
 static QString stringFromRole(const int role)
 {
     switch (role) {

@@ -18,6 +18,8 @@ public:
 
 public slots:
     void on_actionFileOpen_triggered();
+    void on_actionFileSave_triggered();
+    void on_actionFileSaveAs_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -5,6 +5,7 @@
 
 #include <osg/LightModel>
 #include <osgViewer/Renderer>
+#include <osg/ValueObject>
 
 static bool debugView = false;
 #define vDebug if (debugView) qDebug
@@ -64,7 +65,14 @@ void Osg3dView::paintGL()
     const osg::Viewport* vp = cam->getViewport();
 
     m_viewingCore->setAspect(vp->width() / vp->height());
+    osg::Node *n = this->getSceneData();
 
+    int i;
+    if (n->getUserValue("fred", i)) {
+        qDebug("fred is %d", i);
+    } else {
+        qDebug("fred not set");
+    }
     cam->setViewMatrix(m_viewingCore->getInverseMatrix());
     cam->setProjectionMatrix(m_viewingCore->computeProjection());
 

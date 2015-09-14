@@ -30,6 +30,7 @@ public:
     //////////////////// End QAbstractItemModel methods ////////////////////////
 
     void importFileByName(const QString fileName); ///< load a file into the "root"
+    bool saveToFileByName(const QString fileName);
 
     /// print the entire heirarchy on stderr.  Mostly for debugging.
     void            printTree() const;
