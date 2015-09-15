@@ -27,7 +27,13 @@ public:
     bool            setData(const QModelIndex &index,
                             const QVariant &value,
                             int role = Qt::EditRole);
+    //bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+    //bool removeColumns(int column, int count, const QModelIndex & parent = QModelIndex())
     //////////////////// End QAbstractItemModel methods ////////////////////////
+
+  public slots:
+    void cutItem(QModelIndexList qmil);
+    void pasteItem(QModelIndexList qmil);
 
     void importFileByName(const QString fileName); ///< load a file into the "root"
     bool saveToFileByName(const QString fileName);
@@ -58,7 +64,7 @@ private:
     QModelIndex parentOfDrawable(osg::Drawable *childDrawable) const;
     osg::ref_ptr<osg::Group> m_root;
     osg::ref_ptr<osg::MatrixTransform> m_loadedModel;
-    osg::ref_ptr<osg::Group> m_clipBoard;
+    osg::ref_ptr<osg::Object> m_clipBoard;
     bool setObjectMask(const QModelIndex &index, const QVariant &value);
     bool setObjectName(const QModelIndex &index, const QVariant &value);
 };

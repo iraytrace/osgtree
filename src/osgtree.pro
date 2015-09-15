@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     OsgTreeForm.cpp \
     ViewingCore.cpp \
     Osg3dView.cpp \
-    OsgCameraForm.cpp
+    OsgCameraForm.cpp \
+    OsgPropertyTable.cpp \
+    OsgTreeWidget.cpp \
+    OsgTreeWidgetModel.cpp
 
 HEADERS  += MainWindow.h \
     OsgItemModel.h \
@@ -28,7 +31,10 @@ HEADERS  += MainWindow.h \
     OsgTreeForm.h \
     ViewingCore.h \
     Osg3dView.h \
-    OsgCameraForm.h
+    OsgCameraForm.h \
+    OsgPropertyTable.h \
+    OsgTreeWidget.h \
+    OsgTreeWidgetModel.h
 
 FORMS    += MainWindow.ui \
     OsgTreeForm.ui \

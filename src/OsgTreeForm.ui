@@ -32,7 +32,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="OsgTreeView" name="osgTreeView"/>
-     <widget class="QTableWidget" name="osgTableWidget">
+     <widget class="OsgPropertyTable" name="osgPropertyTable">
       <property name="rowCount">
        <number>1</number>
       </property>
@@ -76,6 +76,11 @@
    <class>OsgTreeView</class>
    <extends>QTreeView</extends>
    <header>OsgTreeView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OsgPropertyTable</class>
+   <extends>QTableWidget</extends>
+   <header>OsgPropertyTable.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

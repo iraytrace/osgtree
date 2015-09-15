@@ -48,6 +48,8 @@ void Osg3dView::setScene(OsgItemModel *model)
 {
     connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
             this, SLOT(fitScreenTopView(QModelIndex,int,int)));
+    connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+            this, SLOT(update()));
     connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
             this, SLOT(update()));
 
@@ -67,12 +69,6 @@ void Osg3dView::paintGL()
     m_viewingCore->setAspect(vp->width() / vp->height());
     osg::Node *n = this->getSceneData();
 
-    int i;
-    if (n->getUserValue("fred", i)) {
-        qDebug("fred is %d", i);
-    } else {
-        qDebug("fred not set");
-    }
     cam->setViewMatrix(m_viewingCore->getInverseMatrix());
     cam->setProjectionMatrix(m_viewingCore->computeProjection());
 

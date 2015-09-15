@@ -25,24 +25,13 @@ public:
 
     void setModel(OsgItemModel *model);
 private slots:
-    void osgObjectActivated(osg::ref_ptr<osg::Object> object);
-    void itemClicked(QTableWidgetItem * item);
+    void osgObjectClicked(osg::ref_ptr<osg::Object> object);
+
+
 
 private:
-    void setTableValuesObject(osg::ref_ptr<osg::Object> object);
-    void setTableValuesNode(osg::Node * node);
-    void setTableValuesGroup(osg::Group *group);
-    void setTableValuesGeode(osg::Geode *geode);
-    void setTableValuesDrawable(osg::Drawable *drawable);
-
-    void setTableValuesGeometry(osg::Geometry *geometry);
-
-    QTableWidgetItem *getOrCreateWidgetItem(QTableWidget *tw, int row, int col);
-    QTableWidgetItem *itemForKey(const QString key);
-    void setTextForKey(const QString key, const QString value = QString(""));
 
     Ui::OsgTreeForm *ui;
-    QTableWidgetItem *setKeyChecked(const QString key, const bool value);
 };
 
 #endif // OSGTREEFORM_H

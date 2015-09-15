@@ -10,7 +10,32 @@
 static bool debugModel = false;
 #define modelDebug if (debugModel) qDebug
 
-static QString stringFromRole(const int role);
+static QString stringFromRole(const int role)
+{
+    switch (role) {
+    case Qt::DisplayRole: return QString("DisplayRole"); break;
+    case Qt::DecorationRole: return QString("DecorationRole"); break;
+    case Qt::EditRole: return QString("EditRole"); break;
+    case Qt::ToolTipRole: return QString("ToolTipRole"); break;
+    case Qt::StatusTipRole: return QString("StatusTipRole"); break;
+    case Qt::WhatsThisRole: return QString("WhatsThisRole"); break;
+    case Qt::SizeHintRole: return QString("SizeHintRole"); break;
+    case Qt::FontRole: return QString("FontRole"); break;
+    case Qt::TextAlignmentRole: return QString("TextAlignmentRole"); break;
+    case Qt::BackgroundRole: return QString("BackgroundRole"); break;
+    case Qt::ForegroundRole: return QString("ForegroundRole"); break;
+    case Qt::CheckStateRole: return QString("CheckStateRole"); break;
+    case Qt::InitialSortOrderRole: return QString("InitialSortOrderRole"); break;
+    case Qt::AccessibleTextRole: return QString("AccessibleTextRole"); break;
+    case Qt::AccessibleDescriptionRole: return QString("AccessibleDescriptionRole"); break;
+    }
+
+    if (role >= Qt::UserRole)
+        return QString("UserRole");
+
+    return QString("invalidRole");
+}
+
 
 OsgItemModel::OsgItemModel(QObject * parent)
     : QAbstractItemModel(parent)
@@ -22,7 +47,7 @@ OsgItemModel::OsgItemModel(QObject * parent)
     m_loadedModel->setName("__loadedModel");
 
     m_root->addChild(m_loadedModel);
-    m_root->setUserValue("fred", 10);
+//    m_root->setUserValue("fred", 10);
 
     m_clipBoard->setName("__clipBoard");
 }
@@ -196,8 +221,8 @@ QVariant OsgItemModel::headerData(int section, Qt::Orientation orientation, int 
 
 QModelIndex OsgItemModel::index(int row, int column, const QModelIndex &parent) const
 {
-    qDebug("parent row:%d col:%d Valid: %s",
-           parent.row(), parent.column(), parent.isValid()?"true":"false");
+//    qDebug("parent row:%d col:%d Valid: %s",
+//           parent.row(), parent.column(), parent.isValid()?"true":"false");
 
     osg::ref_ptr<osg::Object> parentItem = getObjectFromModelIndex(parent);
 
@@ -373,6 +398,41 @@ bool OsgItemModel::setData(const QModelIndex & index,
     return dataWasSet;
 }
 
+
+void OsgItemModel::cutItem(QModelIndexList qmil)
+{
+    qDebug("cutItem");
+    // XXX the problem here is that once an item is cut the remaining
+    // items no longer point to the right place.
+    foreach (QModelIndex qmi, qmil) {
+        osg::Object *obj = getObjectFromModelIndex(qmi);
+        qDebug("   %s", obj->getName().c_str());
+        QModelIndex above = parent(qmi);
+        beginRemoveRows(above, qmi.row(), qmi.row());
+        if (osg::Node *n = dynamic_cast<osg::Node *>(obj)) {
+
+            osg::Group *group = n->getParent(0);
+            group->removeChild(n);
+            m_clipBoard = n;
+
+        } else if (osg::Geometry *geom = dynamic_cast<osg::Geometry*>(obj)) {
+
+            osg::Node *n = geom->getParent(0);
+            if (osg::Geode *geode = dynamic_cast<osg::Geode *>(n)) {
+                geode->removeDrawable(geom);
+                m_clipBoard = geom;
+            }
+        }
+        endRemoveRows();
+    }
+}
+
+void OsgItemModel::pasteItem(QModelIndexList qmil)
+{
+    qDebug("paste");
+}
+
+
 void OsgItemModel::importFileByName(const QString fileName)
 {
     osg::Node *loaded = osgDB::readNodeFile(fileName.toStdString());
@@ -408,28 +468,3 @@ bool OsgItemModel::saveToFileByName(const QString fileName)
     return osgDB::writeNodeFile(*writeGroup, fileName.toStdString().c_str());
 }
 
-static QString stringFromRole(const int role)
-{
-    switch (role) {
-    case Qt::DisplayRole: return QString("DisplayRole"); break;
-    case Qt::DecorationRole: return QString("DecorationRole"); break;
-    case Qt::EditRole: return QString("EditRole"); break;
-    case Qt::ToolTipRole: return QString("ToolTipRole"); break;
-    case Qt::StatusTipRole: return QString("StatusTipRole"); break;
-    case Qt::WhatsThisRole: return QString("WhatsThisRole"); break;
-    case Qt::SizeHintRole: return QString("SizeHintRole"); break;
-    case Qt::FontRole: return QString("FontRole"); break;
-    case Qt::TextAlignmentRole: return QString("TextAlignmentRole"); break;
-    case Qt::BackgroundRole: return QString("BackgroundRole"); break;
-    case Qt::ForegroundRole: return QString("ForegroundRole"); break;
-    case Qt::CheckStateRole: return QString("CheckStateRole"); break;
-    case Qt::InitialSortOrderRole: return QString("InitialSortOrderRole"); break;
-    case Qt::AccessibleTextRole: return QString("AccessibleTextRole"); break;
-    case Qt::AccessibleDescriptionRole: return QString("AccessibleDescriptionRole"); break;
-    }
-
-    if (role >= Qt::UserRole)
-        return QString("UserRole");
-
-    return QString("invalidRole");
-}
